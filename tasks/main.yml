@@ -58,7 +58,7 @@
         ansible_distribution_release|lower == "trusty"
 
 - name: Start mongodb (systemd)
-  systemd: state=started name=mongod daemon_reload=yes
+  systemd: state=started name=mongod daemon_reload=yes enabled=yes masked=no
   when: >
         ansible_distribution == "Ubuntu" and
         ansible_distribution_release|lower == "xenial"
