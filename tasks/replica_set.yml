@@ -22,7 +22,7 @@
 
 - name: Check if replica set has been initialized
   shell: >
-      mongo --host {{ mongodb_net.bindIp }} --port {{ mongodb_net.port }} \
+      mongo --host {{ (mongodb_net.bindIp == '0.0.0.0') | ternary('127.0.0.1', mongodb_net.bindIp) }} --port {{ mongodb_net.port }} \
           --quiet --eval "rs.status().ok" 
   register: rs_ok
 
@@ -33,7 +33,7 @@
 
 - name: Initialize replica set on mongodb primary
   shell: >
-      mongo --host {{ mongodb_net.bindIp }} --port {{ mongodb_net.port }} \
+      mongo --host {{ (mongodb_net.bindIp == '0.0.0.0') | ternary('127.0.0.1', mongodb_net.bindIp) }} --port {{ mongodb_net.port }} \
           --quiet --eval 'load("/var/tmp/rs_config.js"); rs.initiate(rsconf)'
   when: rs_ok.stdout == '0'
   register: rs_init
@@ -42,7 +42,7 @@
 
 - name: Get list of current mongodb replica set members
   shell: >
-      mongo --host {{ mongodb_net.bindIp }} --port {{ mongodb_net.port }} \
+      mongo --host {{ (mongodb_net.bindIp == '0.0.0.0') | ternary('127.0.0.1', mongodb_net.bindIp) }} --port {{ mongodb_net.port }} \
           --quiet --eval 'db.isMaster().hosts'
   register: members
 
@@ -56,6 +56,6 @@
 
 - name: Add mongodb secondaries to replica set
   shell: > 
-      mongo --host {{ mongodb_net.bindIp }} --port {{ mongodb_net.port }} \
+      mongo --host {{ (mongodb_net.bindIp == '0.0.0.0') | ternary('127.0.0.1', mongodb_net.bindIp) }} --port {{ mongodb_net.port }} \
           --quiet --eval 'rs.add("{{ item }}")'
   with_items: "{{ mongodb_replica_set_members|difference(rs_members|default([])) }}"
