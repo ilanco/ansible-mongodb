@@ -13,6 +13,14 @@
     mode:  0755
     state: directory
 
+- name: Ensure mongodb log directory exists
+  file:
+    path:  "{{ mongodb_log_dir }}"
+    owner: "{{ mongodb_user }}"
+    group: "{{ mongodb_group }}"
+    mode:  0755
+    state: directory
+
 - name: Update mongodb config file
   template: 
     src:   mongod.conf.j2
