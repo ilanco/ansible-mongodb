@@ -51,8 +51,17 @@
         ansible_distribution == "Ubuntu" and
         ansible_distribution_release|lower == "xenial"
 
-- name: Start mongodb
+- name: Start mongodb (init)
   service: name=mongod enabled=yes state=started
+  when: >
+        ansible_distribution == "Ubuntu" and
+        ansible_distribution_release|lower == "trusty"
+
+- name: Start mongodb (systemd)
+  systemd: state=started name=mongod daemon_reload=yes
+  when: >
+        ansible_distribution == "Ubuntu" and
+        ansible_distribution_release|lower == "xenial"
 
 - include: replica_set.yml
   when: mongodb_create_replica_set
