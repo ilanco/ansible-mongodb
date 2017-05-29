@@ -1,8 +1,0 @@
----
-
-mongodb_user:  mongod
-mongodb_group: "{{ mongodb_user }}"
-
-mongodb_processManagement:
-  fork: "true"
-  pidFilePath: /var/run/mongodb/mongod.pid

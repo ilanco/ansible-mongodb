@@ -1,16 +1,12 @@
 ---
 galaxy_info:
-  author: "Ogonna Iwunze"
-  company: EqualExperts
+  author: "Ilan Cohen"
   license: BSD
   min_ansible_version: 2.0
   platforms:
-    - name: EL
-      versions:
-        - 7
     - name: Ubuntu
       versions:
-        - trusty
+        - xenial
   galaxy_tags:
     - mongodb
 dependencies: []
