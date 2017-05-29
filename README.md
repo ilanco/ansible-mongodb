@@ -30,7 +30,7 @@ Features:
       bindIp: "{{ ansible_eth1.ipv4.address }}"
 
   roles:
-    - wunzeco.mongodb
+    - ilanco.mongodb
 ```
 
 ### MongoDB Replica Set installation
@@ -48,7 +48,7 @@ Features:
     mongodb_replica_set_members: [ "node0.internal:27017", "node1.internal:27017" ]
 
   roles:
-    - wunzeco.mongodb
+    - ilanco.mongodb
 
 
 - hosts: node0.internal				# PRIMARY
@@ -64,7 +64,7 @@ Features:
     mongodb_replica_set_members: [ "node0.internal:27017", "node1.internal:27017" ]
 
   roles:
-    - wunzeco.mongodb
+    - ilanco.mongodb
 ```
 
 It is **recommended** that your replica set members have resolveable names. So 
