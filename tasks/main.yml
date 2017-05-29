@@ -32,49 +32,6 @@
   when: mongodb_apply_defaults_settings and ansible_os_family|lower == 'debian'
   notify: Restart mongodb
 
-- name: Create disable-transparent-hugepages init script
-  copy: 
-    src:   disable-transparent-hugepages
-    dest:  /etc/init.d/disable-transparent-hugepages
-    owner: root
-    group: root
-    mode:  0755
-  notify: Restart mongodb
-  when: mongodb_disable_thp
-
-- name: Enable disable-transparent-hugepages init script
-  service: name=disable-transparent-hugepages enabled=yes
-  when: mongodb_disable_thp
-
-- name: Disable transparent hugepages
-  shell: /etc/init.d/disable-transparent-hugepages start && touch /tmp/thp
-  args:
-    creates: /tmp/thp
-  when: mongodb_disable_thp
-
-- name: Create tuned profile directory for transparent-hugepages
-  file:
-    path:  "/etc/tuned/no-thp"
-    owner: root
-    group: root
-    mode:  0755
-    state: directory
-  when: ansible_os_family|lower == 'redhat'
-
-- name: Create tuned profile config for transparent-hugepages
-  copy: 
-    src:   "no-thp-tuned.conf"
-    dest:  "/etc/tuned/no-thp/tuned.conf"
-    owner: root
-    group: root
-    mode:  0755
-  when: mongodb_disable_thp and ansible_os_family|lower == 'redhat'
-  register: tuned
-
-- name: Enable tuned profile to disable transparent-hugepages
-  shell: tuned-adm profile no-thp
-  when: tuned|change and mongodb_disable_thp and ansible_os_family|lower == 'redhat'
-
 - name: Start mongodb
   service: name=mongod enabled=yes state=started
 
