@@ -70,19 +70,6 @@ Features:
 It is **recommended** that your replica set members have resolveable names. So 
 use FQDN for each replica set member (not IP, especially in production).
 
-## Testing
-
-To run integration tests of this role
-
-```
-PLATFORM=ubuntu                              # OR centos
-kitchen verify $PLATFORM && kitchen destroy $PLATFORM
-```
-
-> **Note:**  
->	`kitchen test` command is not appropriate for this role because both kitchen
->    suites (instances) need to be up and running for all tests to pass.
-
 
 ## ToDo:
 
